@@ -9,4 +9,4 @@ Esse é meu primeiro projeto Git dentro da **Residência TIC18**.
 
 ## Objetivo
 
-Conhecer os comando básicos e algumas recomendações para o uso do Git e do Github.
+Conhecer os comando básicos e algumas recomendações para o uso do Git e do Github. 
