@@ -12,5 +12,5 @@ int main(void) {
     cout<<"Bom dia, " <<nome<< ". Tenha um bom curso.";
 
     cout<< endl;
-    return 0;
+    return 0; 
 }
