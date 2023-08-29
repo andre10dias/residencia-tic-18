@@ -2,7 +2,7 @@
 .vscode
 
 # folders
-./output
+output/
 
 # Prerequisites
 *.d
