@@ -2,10 +2,10 @@
 #include <string.h>
 
 using namespace std;
-#define MAX 100;
+#define MAX 100
 
 int main(void) {
-    for (int i = 1; i <= 100; i++)
+    for (int i = 1; i <= MAX; i++)
     {
         if (i % 3 == 0 && i % 5 == 0){
             cout << to_string(i) + ": FizzBuzz";
