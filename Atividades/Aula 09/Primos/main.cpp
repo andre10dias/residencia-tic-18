@@ -18,7 +18,7 @@ int main(void) {
 
         if (count == 2)
         {
-            cout << i;
+            cout << i << endl;
         }
         
     }
