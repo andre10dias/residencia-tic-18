@@ -19,15 +19,17 @@ struct DataHora
 
 struct Passageiro
 {
-    int numeroAssento;
-    string cpfPassageiro;
-    string nomePassageiro;
-    int idadePassageiro;
+    int numPoltrona;
+    string cpf;
+    string nome;
+    int idade;
 };
 
 struct Viagem
 {
     vector<Passageiro> listaPassageiros;
+    string origem;
+    string destino;
     DataHora dataHora;
 };
 
@@ -35,6 +37,40 @@ struct Onibus
 {
     vector<Viagem> listaViagens;
 };
+
+void systemPause();
+
+void systemClear();
+
+bool comparaDataHora(DataHora data1, DataHora data2);
+
+double arrecadacaoPorViagem(Viagem viagem);
+
+double arrecadacaoPorMes(vector<Viagem> &listaViagens, int mes);
+
+Passageiro retornaPassageiro(vector<Viagem> &listaViagens, Viagem viagem, int numPoltrona);
+
+string retornaHorarioMaisRentavel(vector<Viagem> &listaViagens);
+
+int retornaMediaIdade(vector<Viagem> &listaViagens);
+
+Viagem venderPassagem();
+
+void menuPoltrona(Passageiro &passageiro);
+
+void menuOrigem(Viagem &viagem);
+
+void menuDestino(Viagem &viagem);
+
+int main(void) {
+    Passageiro passageiro;
+    Viagem viagem;
+    
+    viagem = venderPassagem();
+    //menuPoltrona(passageiro);
+
+    return 0;
+}
 
 bool comparaDataHora(DataHora data1, DataHora data2) {
     if (data1.dia == data2.dia && data1.mes == data2.mes 
@@ -73,7 +109,7 @@ double arrecadacaoPorMes(vector<Viagem> &listaViagens, int mes) {
     return valor;
 }
 
-Passageiro retornaPassageiro(vector<Viagem> &listaViagens, Viagem viagem, int numeroAssento) {
+Passageiro retornaPassageiro(vector<Viagem> &listaViagens, Viagem viagem, int numPoltrona) {
     Passageiro passageiro;
 
     for (Viagem v : listaViagens)
@@ -82,7 +118,7 @@ Passageiro retornaPassageiro(vector<Viagem> &listaViagens, Viagem viagem, int nu
         {
             for (Passageiro passageiro : viagem.listaPassageiros)
             {
-                if (passageiro.numeroAssento == numeroAssento)
+                if (passageiro.numPoltrona == numPoltrona)
                 {
                     return passageiro;
                 }
@@ -124,7 +160,7 @@ int retornaMediaIdade(vector<Viagem> &listaViagens) {
     {
         for (Passageiro passageiro : viagem.listaPassageiros)
         {
-            idade += passageiro.idadePassageiro;
+            idade += passageiro.idade;
             qtdTotalPass++;
         }
     }
@@ -133,7 +169,138 @@ int retornaMediaIdade(vector<Viagem> &listaViagens) {
     return media;
 }
 
-int main(void) {
+Viagem venderPassagem() {
     Passageiro passageiro;
+    vector<Passageiro> listaPassageiros;
+
+    Viagem viagem;
+    vector<Viagem> listaViagens;
+
+    cout << "\n######################### Venda de passagens #########################\n\n";
+
+    cout << "\nNome: ";
+    cin >> passageiro.nome;
+
+    cout << "\nCPF: ";
+    cin >> passageiro.cpf;
+
+    cout << "\nIdade: ";
+    cin >> passageiro.idade;
+
+    menuPoltrona(passageiro);
+    menuOrigem(viagem);
+    menuDestino(viagem);
+
+    listaPassageiros.push_back(passageiro);
+    viagem.listaPassageiros = listaPassageiros;
+
+    return viagem;
+}
+
+void menuPoltrona(Passageiro &passageiro) {
+    int poltrona;
+    bool selecaoInvalida = false;
+
+    do {
+        cout << "\nSelecione a poltrona:\n\n";
+
+        for (int i = 1; i <= MAX_PASS; i++)
+        {
+            string str = i < 10 ? "0" : "";
+            
+            cout << "[ " << str << i << " ]";
+
+            if (i % (MAX_PASS / 4) == 0)
+            {
+                if (i == MAX_PASS / 2)
+                {
+                    cout << endl << endl;
+                }
+                
+                cout << endl;
+            }
+            else
+            {
+                cout << "\t";
+            }
+        }
+
+        cout << "\n\nSelecao: ";
+        cin >> poltrona;
+
+        if (poltrona > 0 && poltrona <= MAX_PASS)
+        {
+            passageiro.numPoltrona = poltrona;
+        }
+        else
+        {
+            selecaoInvalida = true;
+        }
+    } while (selecaoInvalida);
+}
+
+void menuOrigem(Viagem &viagem) {
+    int origem;
+    bool selecaoInvalida = false;
+
+    do {
+        cout << "\nSelecione a origem: ";
     
+        cout << "[ 1 ] Sao Paulo";
+        cout << "[ 2 ] Rio de Janeiro";
+        cin >> origem;
+
+        switch (origem)
+        {
+            case 1:
+                viagem.origem = "Sao Paulo";
+                break;
+            
+            case 2:
+                viagem.origem = "Rio de janeiro";
+                break;
+
+            default:
+                selecaoInvalida = true;
+                break;
+        }
+    } while (selecaoInvalida);
+}
+
+void menuDestino(Viagem &viagem) {
+    int destino;
+    bool selecaoInvalida = false;
+
+    do {
+        cout << "\nSelecione o destino: ";
+    
+        cout << "[ 1 ] Sao Paulo";
+        cout << "[ 2 ] Rio de Janeiro";
+        cin >> destino;
+
+        switch (destino)
+        {
+            case 1:
+                viagem.destino = "Sao Paulo";
+                break;
+            
+            case 2:
+                viagem.destino = "Rio de janeiro";
+                break;
+
+            default:
+                selecaoInvalida = true;
+                break;
+        }
+    } while (selecaoInvalida);
+}
+
+void systemPause() {
+    cout << "\nPressione ENTER para continuar...\n";
+    cin.sync();
+    cin.get();
+}
+
+void systemClear() {
+    system("echo ''") != 0 ? system("clear") : system("cls");
 }
