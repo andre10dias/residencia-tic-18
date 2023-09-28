@@ -25,9 +25,9 @@ int main(void) {
     mes = data.substr(3, 2);
     ano = data.substr(6, 4);
 
-    string somenteNumeros = dia+mes+ano;
+    string somenteDigitos = dia+mes+ano;
 
-    if (ehDigito(somenteNumeros) && ehDataValida(stoi(dia), stoi(mes), stoi(ano)))
+    if (ehDigito(somenteDigitos) && ehDataValida(stoi(dia), stoi(mes), stoi(ano)))
     {
         cout << data << " é uma data válida." << endl;
         cout << dia << " de " << retornaMesPorExtenso(stoi(mes)) << " de " << ano << endl;
