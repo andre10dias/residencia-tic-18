@@ -1,22 +1,24 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 class mamifero
 {
     private:
         string especie;
-        int peso;
+        float peso;
         string nomeCientifico;
         string habitat;
         bool ameacadoEstincao;
 
     public:
         mamifero();
-        mamifero(string especie, int peso, string nomeCientifico, string habitat, bool ameacadoEstincao);
+        mamifero(string especie, float peso, string nomeCientifico, string habitat, bool ameacadoEstincao);
         ~mamifero();
 };
 
-mamifero::mamifero(string especie, int peso, string nomeCientifico, string habitat, bool ameacadoEstincao)
+mamifero::mamifero(string especie, float peso, string nomeCientifico, string habitat, bool ameacadoEstincao)
 {
     especie = especie; 
     peso = peso; 

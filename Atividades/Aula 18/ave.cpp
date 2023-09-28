@@ -1,22 +1,24 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 class ave
 {
     private:
         string especie;
-        int peso;
+        float peso;
         string nomeCientifico;
         string habitat;
         bool ameacadoEstincao;
 
     public:
         ave();
-        ave(string especie, int peso, string nomeCientifico, string habitat, bool ameacadoEstincao);
+        ave(string especie, float peso, string nomeCientifico, string habitat, bool ameacadoEstincao);
         ~ave();
 };
 
-ave::ave(string especie, int peso, string nomeCientifico, string habitat, bool ameacadoEstincao)
+ave::ave(string especie, float peso, string nomeCientifico, string habitat, bool ameacadoEstincao)
 {
     especie = especie; 
     peso = peso; 
@@ -28,7 +30,7 @@ ave::ave(string especie, int peso, string nomeCientifico, string habitat, bool a
 ave::ave()
 {
     especie = ""; 
-    peso = ""; 
+    peso = 0; 
     nomeCientifico = ""; 
     habitat = ""; 
     ameacadoEstincao = false;
