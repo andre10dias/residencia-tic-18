@@ -14,9 +14,9 @@ class Ponto
         Ponto();
         ~Ponto();
         float getX();
-        void setX(float x);
+        void setX(float _x);
         float getY();
-        void setY(float y);
+        void setY(float _y);
 };
 
 Ponto::Ponto()
@@ -25,10 +25,10 @@ Ponto::Ponto()
     y = 0;
 }
 
-Ponto::Ponto(float x, float y)
+Ponto::Ponto(float _x, float _y)
 {
-    x = x;
-    y = y;
+    x = _x;
+    y = _y;
 }
 
 Ponto::~Ponto()
@@ -40,9 +40,9 @@ float Ponto::getX()
     return x;
 }
 
-void Ponto::setX(float x)
+void Ponto::setX(float _x)
 {
-    x = x;
+    x = _x;
 }
 
 float Ponto::getY()
@@ -50,9 +50,9 @@ float Ponto::getY()
     return y;
 }
 
-void Ponto::setY(float y)
+void Ponto::setY(float _y)
 {
-    y = y;
+    y = _y;
 }
 
 class Poligono
@@ -65,7 +65,7 @@ class Poligono
         Poligono();
         ~Poligono();
         vector<Ponto> getPontos();
-        void setPontos(vector<Ponto> pontos);
+        void setPonto(Ponto ponto);
 };
 
 Poligono::Poligono(vector<Ponto> pontos)
@@ -86,9 +86,9 @@ vector<Ponto> Poligono::getPontos()
     return pontos;
 }
 
-void Poligono::setPontos(vector<Ponto> pontos)
+void Poligono::setPonto(Ponto ponto)
 {
-    pontos = pontos;
+    pontos.push_back(ponto);
 }
 
 int main() {
@@ -106,14 +106,15 @@ int main() {
         
         p.setX(x);
         p.setY(y);
-        poli.getPontos().push_back(p);
+        poli.setPonto(p);
 
         cout << "\nDeseja inserir mais pontos (s/b)? ";
         cin >> sn;
     } while (sn != 'n');
     
+    vector<Ponto> pontos = poli.getPontos();
     cout << "\nAs coordenadas digitadas foram:" << endl;
-    for (Ponto p : poli.getPontos())
+    for (Ponto p : pontos)
     {
         cout << "( " << p.getX() << ", " << p.getY() << " )\t";
     }
