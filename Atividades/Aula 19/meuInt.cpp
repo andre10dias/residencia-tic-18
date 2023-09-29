@@ -40,10 +40,10 @@ void MeuInt::setI(int _i)
     i = _i;
 }
 
-MeuInt MeuInt :: operator+(MeuInt a) {
-    MeuInt p;
-    p.setI(a.getI() + i + 1);
-    return p;
+MeuInt MeuInt :: operator+(MeuInt _i) {
+    MeuInt m1;
+    m1.setI(_i.getI() + i + 1);
+    return m1;
 }
 
 int main(void) {
