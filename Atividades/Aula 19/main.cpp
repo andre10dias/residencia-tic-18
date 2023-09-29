@@ -66,6 +66,7 @@ class Poligono
         ~Poligono();
         vector<Ponto> getPontos();
         void setPonto(Ponto ponto);
+        void operator=(Poligono p1);
 };
 
 Poligono::Poligono(vector<Ponto> pontos)
@@ -91,8 +92,17 @@ void Poligono::setPonto(Ponto ponto)
     pontos.push_back(ponto);
 }
 
+void Poligono::operator=(Poligono p1) {
+    Poligono p2;
+    for(Ponto p : p1.getPontos())
+    {
+        p2.setPonto(p);
+    }
+}
+
 int main() {
     Poligono poli;
+    Poligono poli2;
     Ponto p;
     float x, y;
 
@@ -107,6 +117,9 @@ int main() {
         p.setX(x);
         p.setY(y);
         poli.setPonto(p);
+
+       //poli2 = poli;
+       poli2 = poli;
 
         cout << "\nDeseja inserir mais pontos (s/b)? ";
         cin >> sn;
