@@ -15,6 +15,9 @@ void systemClear() {
 void testaSO() {
     int retorno = system("echo ''"); 
     cout << "Retorno: " << retorno << endl;
+    cout << "Testando pause e limpa tela";
+    systemPause();
+    systemClear();
 }
 
 int main(void) {
