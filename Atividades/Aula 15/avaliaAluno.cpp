@@ -46,6 +46,49 @@ int main(void)
     return 0;
 }
 
+void menu() {
+    int opcao = 0;
+
+    cout << TRACO << endl;
+    cout << "\t\t\t\t\tAvalia alunos" << endl;
+    cout << TRACO << endl;
+
+    cout << "[ 1 ] Cadastrar alunos\n";
+    cout << "[ 2 ] Lançar notas\n";
+    cout << "[ 3 ] Alunos aprovados\n";
+    cout << "[ 4 ] Alunos reprovados\n";
+    cout << "[ 5 ] Alunos acima da media\n";
+
+    cout << "\nSelecione uma opção: ";
+    cin >> opcao;
+
+    switch (opcao)
+    {
+    case 1:
+        telaCadastrarAluno();
+        break;
+
+    case 2:
+        lancarNotas();
+        break;
+
+    case 1:
+        /* code */
+        break;
+
+    case 1:
+        /* code */
+        break;
+
+    case 1:
+        /* code */
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void telaCadastrarAluno() {
     Aluno novoAluno;
     vector<Aluno> listaAlunos;
