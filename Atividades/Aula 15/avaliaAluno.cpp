@@ -29,12 +29,14 @@ struct Aluno
     string situacao;
 };
 
-void telaCadastrarAluno();
+void telaCadastrarAluno(vector<Aluno> &listaAlunos);
 bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno);
 bool lancarNotas(vector<Aluno> &listaAlunos);
 void calcularMediaAluno(vector<Aluno> &listaAlunos, int index);
 float retornarMediaTurma(vector<Aluno> &listaAlunos);
-void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados = true, bool reprovados = false, float mediaTurma = -1);
+void telaListarAlunosAprovadosOuReprovados(vector<Aluno> &listaAlunos, bool aprovados, bool reprovados);
+void telaListarAlunosAcimaDaMedia(vector<Aluno> &listaAlunos);
+void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados, bool reprovados, float mediaTurma);
 int buscarAluno(vector<Aluno> &listaAlunos, string matricula);
 void menu(vector<Aluno> &listaAlunos);
 
@@ -81,7 +83,7 @@ void menu(vector<Aluno> &listaAlunos) {
             telaListarAlunosAprovadosOuReprovados(listaAlunos, false, true);
             break;
 
-        case 1:
+        case 5:
             telaListarAlunosAcimaDaMedia(listaAlunos);
             break;
         
@@ -90,9 +92,8 @@ void menu(vector<Aluno> &listaAlunos) {
     }
 }
 
-void telaCadastrarAluno(listaAlunos) {
+void telaCadastrarAluno(vector<Aluno> &listaAlunos) {
     Aluno novoAluno;
-    vector<Aluno> listaAlunos;
 
     cout << TRACO << endl;
     cout << "\t\t\t\t\tCadastro de alunos" << endl;
@@ -128,15 +129,17 @@ bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno) {
 }
 
 bool lancarNotas(vector<Aluno> &listaAlunos) {
+    int tamanho = listaAlunos.size();
+
     cout << TRACO << endl;
     cout << "\t\t\t\t\tLançamento de notas" << endl;
     cout << TRACO << endl;
 
-    for(Aluno aluno : listaAlunos)
+    for(int i = 0; i < tamanho; i++)
     {
-        Prova prova = aluno.prova;
+        Prova prova = listaAlunos[i].prova;
 
-        if (aluno.matricula != "" && aluno.nome != "")
+        if (listaAlunos[i].matricula != "" && listaAlunos[i].nome != "")
         {
             cout << "Informe a nota da prova teórica 1: ";
             cin >> prova.notaTeorica1;
@@ -156,8 +159,8 @@ bool lancarNotas(vector<Aluno> &listaAlunos) {
             cout << "Informe a nota da prova prática 2: ";
             cin >> prova.notaPratica2;
 
-            calcularMediaAluno(listaAlunos, index);
-            aluno.situacao = aluno.media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
+            calcularMediaAluno(listaAlunos, i);
+            listaAlunos[i].situacao = listaAlunos[i].media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
             return true;
         }
     }
@@ -166,7 +169,6 @@ bool lancarNotas(vector<Aluno> &listaAlunos) {
 }
 
 void calcularMediaAluno(vector<Aluno> &listaAlunos, int index) {
-    float media;
     float soma = 0;
 
     Aluno aluno = listaAlunos[index];
@@ -180,7 +182,6 @@ void calcularMediaAluno(vector<Aluno> &listaAlunos, int index) {
 
 float retornarMediaTurma(vector<Aluno> &listaAlunos) {
     int divisor = listaAlunos.size();
-    float media;
     float soma = 0;
 
     for (Aluno aluno : listaAlunos)
@@ -198,7 +199,7 @@ void telaListarAlunosAprovadosOuReprovados(vector<Aluno> &listaAlunos, bool apro
     cout << "\t\t\t\t\tLista de alunos " << titulo << endl;
     cout << TRACO << endl;
     
-    listarAlunos(listaAlunos, aprovados, reprovados);
+    listarAlunos(listaAlunos, aprovados, reprovados, -1);
 }
 
 void telaListarAlunosAcimaDaMedia(vector<Aluno> &listaAlunos) {
@@ -211,7 +212,7 @@ void telaListarAlunosAcimaDaMedia(vector<Aluno> &listaAlunos) {
     listarAlunos(listaAlunos, false, false, media);
 }
 
-void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados = true, bool reprovados = false, float mediaTurma = -1) {
+void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados, bool reprovados, float mediaTurma) {
     for (Aluno aluno : listaAlunos)
     {   
         Prova prova = aluno.prova;
