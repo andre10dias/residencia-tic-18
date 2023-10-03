@@ -12,6 +12,10 @@ void systemClear() {
     system("echo ''") != 0 ? system("cls") : system("clear");
 }
 
+void systemClear2() {
+    __linux__ ? system("clear") : system("cls");
+}
+
 void testaSO() {
     int retorno = system("echo ''"); 
     cout << "Retorno: " << retorno << endl;
@@ -30,6 +34,10 @@ void testaSO() {
     #else
         std::cout << "Olá, Other!" << '\n';
     #endif
+
+    cout << "Testando pause e limpa tela 2";
+    systemPause();
+    systemClear2();
 }
 
 int main(void) {
