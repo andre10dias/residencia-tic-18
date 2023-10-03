@@ -31,22 +31,23 @@ struct Aluno
 
 void telaCadastrarAluno();
 bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno);
-bool lancarNotas(vector<Aluno> &listaAlunos, int index);
+bool lancarNotas(vector<Aluno> &listaAlunos);
 void calcularMediaAluno(vector<Aluno> &listaAlunos, int index);
 float retornarMediaTurma(vector<Aluno> &listaAlunos);
 void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados = true, bool reprovados = false, float mediaTurma = -1);
 int buscarAluno(vector<Aluno> &listaAlunos, string matricula);
+void menu(vector<Aluno> &listaAlunos);
 
 int main(void) 
 {
     vector<Aluno> listaAlunos;
     Aluno aluno;
-
+    menu(listaAlunos);
     cout << endl;
     return 0;
 }
 
-void menu() {
+void menu(vector<Aluno> &listaAlunos) {
     int opcao = 0;
 
     cout << TRACO << endl;
@@ -64,32 +65,32 @@ void menu() {
 
     switch (opcao)
     {
-    case 1:
-        telaCadastrarAluno();
-        break;
+        case 1:
+            telaCadastrarAluno(listaAlunos);
+            break;
 
-    case 2:
-        lancarNotas();
-        break;
+        case 2:
+            lancarNotas(listaAlunos);
+            break;
 
-    case 1:
-        /* code */
-        break;
+        case 3:
+            telaListarAlunosAprovadosOuReprovados(listaAlunos, true, false);
+            break;
 
-    case 1:
-        /* code */
-        break;
+        case 4:
+            telaListarAlunosAprovadosOuReprovados(listaAlunos, false, true);
+            break;
 
-    case 1:
-        /* code */
-        break;
-    
-    default:
-        break;
+        case 1:
+            telaListarAlunosAcimaDaMedia(listaAlunos);
+            break;
+        
+        default:
+            break;
     }
 }
 
-void telaCadastrarAluno() {
+void telaCadastrarAluno(listaAlunos) {
     Aluno novoAluno;
     vector<Aluno> listaAlunos;
 
@@ -126,36 +127,39 @@ bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno) {
     return false;
 }
 
-bool lancarNotas(vector<Aluno> &listaAlunos, int index) {
+bool lancarNotas(vector<Aluno> &listaAlunos) {
     cout << TRACO << endl;
     cout << "\t\t\t\t\tLançamento de notas" << endl;
     cout << TRACO << endl;
 
-    Prova prova = listaAlunos[index].prova;
-
-    if (listaAlunos[index].matricula != "" && listaAlunos[index].nome != "")
+    for(Aluno aluno : listaAlunos)
     {
-        cout << "Informe a nota da prova teórica 1: ";
-        cin >> prova.notaTeorica1;
+        Prova prova = aluno.prova;
 
-        cout << endl;
+        if (aluno.matricula != "" && aluno.nome != "")
+        {
+            cout << "Informe a nota da prova teórica 1: ";
+            cin >> prova.notaTeorica1;
 
-        cout << "Informe a nota da prova teórica 2: ";
-        cin >> prova.notaTeorica2;
+            cout << endl;
 
-        cout << endl;
+            cout << "Informe a nota da prova teórica 2: ";
+            cin >> prova.notaTeorica2;
 
-        cout << "Informe a nota da prova prática 1: ";
-        cin >> prova.notaPratica1;
+            cout << endl;
 
-        cout << endl;
+            cout << "Informe a nota da prova prática 1: ";
+            cin >> prova.notaPratica1;
 
-        cout << "Informe a nota da prova prática 2: ";
-        cin >> prova.notaPratica2;
+            cout << endl;
 
-        calcularMediaAluno(listaAlunos, index);
-        listaAlunos[index].situacao = listaAlunos[index].media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
-        return true;
+            cout << "Informe a nota da prova prática 2: ";
+            cin >> prova.notaPratica2;
+
+            calcularMediaAluno(listaAlunos, index);
+            aluno.situacao = aluno.media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
+            return true;
+        }
     }
     
     return false;
