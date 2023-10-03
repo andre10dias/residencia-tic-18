@@ -12,9 +12,15 @@ void systemClear() {
     system("echo ''") != 0 ? system("cls") : system("clear");
 }
 
-void systemClear2() {
-    _WIN32 ? system("cls") : system("clear");
-}
+// void systemClear2() {
+//     //N funciona no linux
+//     _WIN32 ? system("cls") : system("clear");
+// }
+
+// void systemClear() {
+//     //N funciona no windows
+//     __linux__ ? system("cls") : system("clear");
+// }
 
 void testaSO() {
     int retorno = system("echo ''"); 
@@ -37,7 +43,6 @@ void testaSO() {
 
     cout << "Testando pause e limpa tela 2";
     systemPause();
-    systemClear2();
 }
 
 int main(void) {
