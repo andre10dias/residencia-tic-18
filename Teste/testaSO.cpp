@@ -18,6 +18,18 @@ void testaSO() {
     cout << "Testando pause e limpa tela";
     systemPause();
     systemClear();
+
+    #if __linux__
+        std::cout << "Olá, GNU/Linux!" << '\n';
+    #elif _WIN32
+        #if defined(_WIN64)
+            std::cout << "Olá, Windows 64-bit!" << '\n';
+        #else
+            std::cout << "Olá, Windows!" << '\n';
+        #endif
+    #else
+        std::cout << "Olá, Other!" << '\n';
+    #endif
 }
 
 int main(void) {
