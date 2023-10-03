@@ -13,7 +13,7 @@ void systemClear() {
 }
 
 void systemClear2() {
-    __linux__ ? system("clear") : system("cls");
+    _WIN32 ? system("cls") : system("clear");
 }
 
 void testaSO() {
