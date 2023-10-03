@@ -9,7 +9,7 @@ void systemPause() {
 }
 
 void systemClear() {
-    system("echo ''") != 0 ? system("clear") : system("cls");
+    system("echo ''") != 0 ? system("cls") : system("clear");
 }
 
 void testaSO() {
