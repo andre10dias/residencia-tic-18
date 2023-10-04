@@ -22,6 +22,14 @@ void systemClear() {
 //     __linux__ ? system("cls") : system("clear");
 // }
 
+void systemClear3() {
+    #if __linux__
+        system("clear");
+    #else
+        system("cls");
+    #endif
+}
+
 void testaSO() {
     int retorno = system("echo ''"); 
     cout << "Retorno: " << retorno << endl;
@@ -41,8 +49,9 @@ void testaSO() {
         std::cout << "Olá, Other!" << '\n';
     #endif
 
-    cout << "Testando pause e limpa tela 2";
+    cout << "Testando pause e limpa tela 3";
     systemPause();
+    systemClear3();
 }
 
 int main(void) {
