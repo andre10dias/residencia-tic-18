@@ -7,7 +7,9 @@ using namespace std;
 #define TRACO "---------------------------------------------------------------------------------------------------"
 #define MSG_ERRO_CADASTRO "Falha ao cadastrar "
 #define MSG_SUCES_CADASTRO " cadasrado(a) com sucesso!"
-#define MSG_N_LOCALIZADO "NÃO existem dados para serem exibidos"
+#define MSG_N_LOCALIZADO "NÃO existem dados para serem exibidos."
+#define MSG_OPCAO_INVALIDA "Opção inválida."
+#define MSG_SUCES_NOTAS "Nota(s) lançada(s) com sucesso!"
 #define PESO_PRATICA 1
 #define PESO_TEORICA 2
 #define MEDIA_APROVACAO 7
@@ -31,91 +33,138 @@ struct Aluno
 
 void telaCadastrarAluno(vector<Aluno> &listaAlunos);
 bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno);
-bool lancarNotas(vector<Aluno> &listaAlunos);
+void cabecalhoLancarNotas(vector<Aluno> &listaAlunos, int index);
+void lancarNotas(vector<Aluno> &listaAlunos);
 void calcularMediaAluno(vector<Aluno> &listaAlunos, int index);
 float retornarMediaTurma(vector<Aluno> &listaAlunos);
 void telaListarAlunosAprovadosOuReprovados(vector<Aluno> &listaAlunos, bool aprovados, bool reprovados);
 void telaListarAlunosAcimaDaMedia(vector<Aluno> &listaAlunos);
 void listarAlunos(vector<Aluno> &listaAlunos, bool aprovados, bool reprovados, float mediaTurma);
+string gerarMatricula(int tamanhoListaAlunos);
 int buscarAluno(vector<Aluno> &listaAlunos, string matricula);
 void menu(vector<Aluno> &listaAlunos);
+int menuContinuar(string msg);
+int sair();
+void systemClear();
+void systemPause();
+void systemPauseAndClear();
+void mockInserirAlunos(vector<Aluno> &listaAlunos, int numeroAlunos);
 
 int main(void) 
 {
     vector<Aluno> listaAlunos;
     Aluno aluno;
+    mockInserirAlunos(listaAlunos, 2);
     menu(listaAlunos);
     cout << endl;
     return 0;
 }
 
 void menu(vector<Aluno> &listaAlunos) {
+    systemClear();
     int opcao = 0;
 
-    cout << TRACO << endl;
-    cout << "\t\t\t\t\tAvalia alunos" << endl;
-    cout << TRACO << endl;
-
-    cout << "[ 1 ] Cadastrar alunos\n";
-    cout << "[ 2 ] Lançar notas\n";
-    cout << "[ 3 ] Alunos aprovados\n";
-    cout << "[ 4 ] Alunos reprovados\n";
-    cout << "[ 5 ] Alunos acima da media\n";
-
-    cout << "\nSelecione uma opção: ";
-    cin >> opcao;
-
-    switch (opcao)
+    do
     {
-        case 1:
-            telaCadastrarAluno(listaAlunos);
-            break;
+        cout << TRACO << endl;
+        cout << "\t\t\t\t\tAvalia alunos" << endl;
+        cout << TRACO << endl << endl;
 
-        case 2:
-            lancarNotas(listaAlunos);
-            break;
+        cout << "[ 1 ] Cadastrar alunos\n";
+        cout << "[ 2 ] Lançar notas\n";
+        cout << "[ 3 ] Alunos aprovados\n";
+        cout << "[ 4 ] Alunos reprovados\n";
+        cout << "[ 5 ] Alunos acima da media\n";
+        cout << "[ 0 ] Sair\n";
 
-        case 3:
-            telaListarAlunosAprovadosOuReprovados(listaAlunos, true, false);
-            break;
+        cout << "\nSelecione uma opção: ";
+        cin >> opcao;
 
-        case 4:
-            telaListarAlunosAprovadosOuReprovados(listaAlunos, false, true);
-            break;
+        switch (opcao)
+        {
+            case 1:
+                telaCadastrarAluno(listaAlunos);
+                break;
 
-        case 5:
-            telaListarAlunosAcimaDaMedia(listaAlunos);
-            break;
-        
-        default:
-            break;
-    }
+            case 2:
+                lancarNotas(listaAlunos);
+                break;
+
+            case 3:
+                telaListarAlunosAprovadosOuReprovados(listaAlunos, true, false);
+                break;
+
+            case 4:
+                telaListarAlunosAprovadosOuReprovados(listaAlunos, false, true);
+                break;
+
+            case 5:
+                telaListarAlunosAcimaDaMedia(listaAlunos);
+                break;
+
+            case 0:
+                sair();
+                break;
+            
+            default:
+                cout << MSG_OPCAO_INVALIDA << endl;
+                systemPauseAndClear();
+                break;
+        }
+    } while (opcao > 5 || opcao < 0);
 }
 
 void telaCadastrarAluno(vector<Aluno> &listaAlunos) {
+    int tam = listaAlunos.size();
     Aluno novoAluno;
+    int opcao;
 
-    cout << TRACO << endl;
-    cout << "\t\t\t\t\tCadastro de alunos" << endl;
-    cout << TRACO << endl;
-
-    cout << "Matricula: ";
-    cin >> novoAluno.matricula;
-
-    cout << "Nome: ";
-    cin.ignore();
-    getline(cin, novoAluno.nome);
-
-    bool sucesso = cadastrarAlunos(listaAlunos, novoAluno);
-
-    if (sucesso)
+    do
     {
-        cout << "Aluno" << MSG_SUCES_CADASTRO << endl;
-    }
-    else
-    {
-        cout << MSG_ERRO_CADASTRO << "aluno." << endl;
-    }
+        systemClear();
+
+        cout << TRACO << endl;
+        cout << "\t\t\t\t\tCadastro de alunos" << endl;
+        cout << TRACO << endl << endl;
+
+        opcao = menuContinuar("Deseja cadastrar um novo aluno?");
+
+        if (opcao == 0)
+        {
+            menu(listaAlunos);
+        }
+        else if (opcao ==  1)
+        {
+            systemClear();
+
+            cout << TRACO << endl;
+            cout << "\t\t\t\t\tCadastro de alunos" << endl;
+            cout << TRACO << endl << endl;
+
+            novoAluno.matricula = gerarMatricula(tam);
+
+            cout << "Nome: ";
+            cin.ignore();
+            getline(cin, novoAluno.nome);
+
+            bool sucesso = cadastrarAlunos(listaAlunos, novoAluno);
+
+            if (sucesso)
+            {
+                cout << "Aluno" << MSG_SUCES_CADASTRO << endl;
+                systemPause();
+            }
+            else
+            {
+                cout << MSG_ERRO_CADASTRO << "aluno." << endl;
+                systemPause();
+            }
+        }
+        else
+        {
+            systemPauseAndClear();
+        }
+    } while (opcao != 0);
 }
 
 bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno) {
@@ -128,44 +177,83 @@ bool cadastrarAlunos(vector<Aluno> &listaAlunos, Aluno aluno) {
     return false;
 }
 
-bool lancarNotas(vector<Aluno> &listaAlunos) {
-    int tamanho = listaAlunos.size();
-
+void cabecalhoLancarNotas(vector<Aluno> &listaAlunos, int index) {
+    systemClear();
     cout << TRACO << endl;
     cout << "\t\t\t\t\tLançamento de notas" << endl;
-    cout << TRACO << endl;
+    cout << TRACO << endl << endl;
 
-    for(int i = 0; i < tamanho; i++)
+    cout << "Aluno: " << listaAlunos[index].nome << endl << endl;
+}
+
+void lancarNotas(vector<Aluno> &listaAlunos) {
+    int tamanho = listaAlunos.size();
+    int opcao;
+
+    do
     {
-        Prova prova = listaAlunos[i].prova;
+        systemClear();
 
-        if (listaAlunos[i].matricula != "" && listaAlunos[i].nome != "")
+        cout << TRACO << endl;
+        cout << "\t\t\t\t\tLançamento de notas" << endl;
+        cout << TRACO << endl << endl;
+
+        opcao = menuContinuar("Deseja lançar notas?");
+
+        if (opcao == 0)
         {
-            cout << "Informe a nota da prova teórica 1: ";
-            cin >> prova.notaTeorica1;
-
-            cout << endl;
-
-            cout << "Informe a nota da prova teórica 2: ";
-            cin >> prova.notaTeorica2;
-
-            cout << endl;
-
-            cout << "Informe a nota da prova prática 1: ";
-            cin >> prova.notaPratica1;
-
-            cout << endl;
-
-            cout << "Informe a nota da prova prática 2: ";
-            cin >> prova.notaPratica2;
-
-            calcularMediaAluno(listaAlunos, i);
-            listaAlunos[i].situacao = listaAlunos[i].media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
-            return true;
+            menu(listaAlunos);
         }
-    }
-    
-    return false;
+        else if (opcao ==  1)
+        {
+            for(int i = 0; i < tamanho; i++)
+            {
+                Prova prova = listaAlunos[i].prova;
+
+                if (listaAlunos[i].matricula != "" && listaAlunos[i].nome != "")
+                {
+                    cabecalhoLancarNotas(listaAlunos, i);
+
+                    cout << "Prova teórica 1\n\n";
+                    cout << "Nota: ";
+                    cin >> prova.notaTeorica1;
+
+                    cabecalhoLancarNotas(listaAlunos, i);
+
+                    cout << "Prova teórica 2\n\n";
+                    cout << "Nota: ";
+                    cin >> prova.notaTeorica2;
+
+                    cabecalhoLancarNotas(listaAlunos, i);
+
+                    cout << "Prova prática 1\n\n";
+                    cout << "Nota: ";
+                    cin >> prova.notaPratica1;
+
+                    cabecalhoLancarNotas(listaAlunos, i);
+
+                    cout << "Prova prática 2\n\n";
+                    cout << "Nota: ";
+                    cin >> prova.notaPratica2;
+
+                    calcularMediaAluno(listaAlunos, i);
+                    listaAlunos[i].situacao = listaAlunos[i].media >= MEDIA_APROVACAO ? "APROVADO" : "REPROVADO";
+
+                    if (i == tamanho-1)
+                    {
+                        cout << endl << endl;
+                        cout << MSG_SUCES_NOTAS << endl;
+                        systemPauseAndClear();
+                        menu(listaAlunos);
+                    }
+                }
+            }    
+        }
+        else
+        {
+            systemPauseAndClear();
+        } 
+    } while (opcao != 0);
 }
 
 void calcularMediaAluno(vector<Aluno> &listaAlunos, int index) {
@@ -242,4 +330,130 @@ int buscarAluno(vector<Aluno> &listaAlunos, string matricula) {
     }
     
     return -1;
+}
+
+string gerarMatricula(int tamanhoListaAlunos) {
+    string digito = "000";
+    tamanhoListaAlunos += 1;
+    digito = tamanhoListaAlunos > 9 ? "00" : digito;
+
+    return "BA"+digito+to_string(tamanhoListaAlunos);      
+}
+
+int menuContinuar(string msg) {
+    int opcao;
+
+    cout << msg << endl;
+    cout << " [ 1 ] Sim\t[ 0 ] Não\n\n";
+
+    cout << "Selecione: ";
+    cin >> opcao;
+
+    if (opcao < 0 || opcao > 1)
+    {
+        cout << MSG_OPCAO_INVALIDA << endl;
+        return -1;
+    }
+
+    return opcao;
+}
+
+int sair() {
+    cout << "\nFinalizando programa...";
+    systemPauseAndClear();
+    return 0;
+}
+
+void systemClear() {
+    #if __linux__
+        system("clear");
+    #else
+        system("cls");
+    #endif
+}
+
+void systemPause() {
+    cout << "\nPressione ENTER para continuar...\n";
+    #if __linux__
+        cin.ignore();
+    #else
+        cin.sync();
+    #endif
+    cin.get();
+}
+
+void systemPauseAndClear() {
+    systemPause();
+    systemClear();
+}
+
+void mockInserirAlunos(vector<Aluno> &listaAlunos, int numeroAlunos) {
+    int tam = listaAlunos.size();
+    int max = 12;
+    int i = 0;
+
+    while (i < numeroAlunos && i < max)
+    {
+        Aluno novoAluno1;
+        novoAluno1.matricula = gerarMatricula(tam);
+        novoAluno1.nome = "Carlos Dias";
+        listaAlunos.push_back(novoAluno1);
+        i++;
+
+        Aluno novoAluno2;
+        novoAluno2.matricula = gerarMatricula(tam);
+        novoAluno2.nome = "Maria Candido";
+        listaAlunos.push_back(novoAluno2);
+        i++;
+
+    //     Aluno novoAluno3;
+    //     novoAluno3.matricula = gerarMatricula(tam);
+    //     novoAluno3.nome = "Fernanda Santos";
+    //     listaAlunos.push_back(novoAluno3);
+
+    //     Aluno novoAluno4;
+    //     novoAluno4.matricula = gerarMatricula(tam);
+    //     novoAluno4.nome = "Francisco Lima";
+    //     listaAlunos.push_back(novoAluno4);
+
+    //     Aluno novoAluno5;
+    //     novoAluno5.matricula = gerarMatricula(tam);
+    //     novoAluno5.nome = "João Brito";
+    //     listaAlunos.push_back(novoAluno5);
+
+    //     Aluno novoAluno6;
+    //     novoAluno6.matricula = gerarMatricula(tam);
+    //     novoAluno6.nome = "Pedro Cardoso";
+    //     listaAlunos.push_back(novoAluno6);
+
+    //     Aluno novoAluno7;
+    //     novoAluno7.matricula = gerarMatricula(tam);
+    //     novoAluno7.nome = "Luana Dias";
+    //     listaAlunos.push_back(novoAluno7);
+
+    //     Aluno novoAluno8;
+    //     novoAluno8.matricula = gerarMatricula(tam);
+    //     novoAluno8.nome = "Agatha Dias";
+    //     listaAlunos.push_back(novoAluno8);
+
+    //     Aluno novoAluno9;
+    //     novoAluno9.matricula = gerarMatricula(tam);
+    //     novoAluno9.nome = "Antônio Ferreira";
+    //     listaAlunos.push_back(novoAluno9);
+
+    //     Aluno novoAluno10;
+    //     novoAluno10.matricula = gerarMatricula(tam);
+    //     novoAluno10.nome = "Bruno Mezenga";
+    //     listaAlunos.push_back(novoAluno10);
+
+    //     Aluno novoAluno11;
+    //     novoAluno11.matricula = gerarMatricula(tam);
+    //     novoAluno11.nome = "Claudia Lopes";
+    //     listaAlunos.push_back(novoAluno11);
+
+    //     Aluno novoAluno12;
+    //     novoAluno12.matricula = gerarMatricula(tam);
+    //     novoAluno12.nome = "Aparecida da Silva";
+    //     listaAlunos.push_back(novoAluno12);
+    }
 }
