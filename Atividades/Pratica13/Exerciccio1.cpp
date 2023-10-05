@@ -42,7 +42,15 @@ void systemPause();
 
 void systemClear();
 
+void systemPauseAndClear();
+
+int sair();
+
 bool comparaDataHora(DataHora data1, DataHora data2);
+
+void verificaArrecadacaoPorViagem(vector<Viagem> &listaViagens);
+
+void listarViagem(vector<Viagem> &listaViagens);
 
 double arrecadacaoPorViagem(Viagem viagem);
 
@@ -54,7 +62,9 @@ string retornaHorarioMaisRentavel(vector<Viagem> &listaViagens);
 
 int retornaMediaIdade(vector<Viagem> &listaViagens);
 
-Viagem venderPassagem();
+void venderPassagem(vector<Viagem> &listaViagens);
+
+void menu();
 
 void menuPoltrona(Passageiro &passageiro);
 
@@ -63,12 +73,8 @@ void menuOrigem(Viagem &viagem);
 void menuDestino(Viagem &viagem);
 
 int main(void) {
-    Passageiro passageiro;
-    Viagem viagem;
-    
-    viagem = venderPassagem();
-    //menuPoltrona(passageiro);
-
+    menu();
+    cout << endl;
     return 0;
 }
 
@@ -81,6 +87,45 @@ bool comparaDataHora(DataHora data1, DataHora data2) {
     }
 
     return false;
+}
+
+void verificaArrecadacaoPorViagem(vector<Viagem> &listaViagens) {
+    int tam = listaViagens.size();
+    Viagem viagem;
+    int index;
+    float valor;
+
+    if (tam > 0)
+    {
+        listarViagem(listaViagens);
+        cout << "\n\nSelecione uma viagem: ";
+        cin >> index;
+
+        viagem = listaViagens[index-1];
+        valor = arrecadacaoPorViagem(viagem);
+
+        cout << "\n\nDados da viagem selecionada:\n";
+        cout << "Origem: " << viagem.origem << endl;
+        cout << "Destino: " << viagem.destino << endl;
+        cout << "Data/Hora: " << viagem.dataHora << endl << endl;
+
+        cout << "Valor arecadado: " << valor << endl;
+    }
+    else
+    {
+        cout << "\nNenhum dado para ser exibido.\n";
+    }
+    
+}
+
+void listarViagem(vector<Viagem> &listaViagens) {
+    int tam = listaViagens.size();
+
+    cout << "\tOrigem\tDestino\tData/Hora" << endl;
+    for (int i = 0; i < tam; i++)
+    {
+        cout << "[ " << i+1 << " ] " << listaViagens[i].origem << "\t" << listaViagens[i].destino << "\t" << listaViagens[i].dataHora << endl;
+    }
 }
 
 double arrecadacaoPorViagem(Viagem viagem) {
@@ -169,16 +214,15 @@ int retornaMediaIdade(vector<Viagem> &listaViagens) {
     return media;
 }
 
-Viagem venderPassagem() {
+void venderPassagem(vector<Viagem> &listaViagens) {
     Passageiro passageiro;
     vector<Passageiro> listaPassageiros;
 
-    Viagem viagem;
-    vector<Viagem> listaViagens;
+    Viagem viagem;;
 
     cout << "\n######################### Venda de passagens #########################\n\n";
 
-    cout << "\nNome: ";
+    cout << "\nNome do passageiro: ";
     cin >> passageiro.nome;
 
     cout << "\nCPF: ";
@@ -193,8 +237,7 @@ Viagem venderPassagem() {
 
     listaPassageiros.push_back(passageiro);
     viagem.listaPassageiros = listaPassageiros;
-
-    return viagem;
+    listaViagens.push_back(viagem);
 }
 
 void menuPoltrona(Passageiro &passageiro) {
@@ -246,8 +289,8 @@ void menuOrigem(Viagem &viagem) {
     do {
         cout << "\nSelecione a origem: ";
     
-        cout << "[ 1 ] Sao Paulo";
-        cout << "[ 2 ] Rio de Janeiro";
+        cout << "[ 1 ] Sao Paulo\t[ 2 ] Rio de Janeiro\n\n";
+        cout << "Seleção: ";
         cin >> origem;
 
         switch (origem)
@@ -295,12 +338,51 @@ void menuDestino(Viagem &viagem) {
     } while (selecaoInvalida);
 }
 
-void systemPause() {
-    cout << "\nPressione ENTER para continuar...\n";
-    cin.sync();
-    cin.get();
+void menu() {
+    vector<Viagem> listaViagens;
+    Viagem viagem;
+    int opcao;
+
+    switch (opcao)
+    {
+        case 1:
+            venderPassagem(listaViagens);
+            break;
+
+        case 2:
+            verificaArrecadacaoPorViagem(listaViagens);
+            break;
+        
+        default:
+            break;
+    }
+}
+
+int sair() {
+    cout << "\nFinalizando programa...";
+    systemPauseAndClear();
+    return 0;
 }
 
 void systemClear() {
-    system("echo ''") != 0 ? system("clear") : system("cls");
+    #if __linux__
+        system("clear");
+    #else
+        system("cls");
+    #endif
+}
+
+void systemPause() {
+    cout << "\nPressione ENTER para continuar...\n";
+    #if __linux__
+        cin.ignore();
+    #else
+        cin.sync();
+    #endif
+    cin.get();
+}
+
+void systemPauseAndClear() {
+    systemPause();
+    systemClear();
 }
