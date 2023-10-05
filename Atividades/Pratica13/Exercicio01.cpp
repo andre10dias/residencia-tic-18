@@ -51,8 +51,11 @@ int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens);
 void listarPassagensVendidas(vector<Passagem> &listaPassagens);
 void cabecalhoArrecadacaoPorViagem();
 void cabecalhoArrecadacaoPorMes();
+void cabecalhoPassageiroPorViagemPoltrona();
 int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+int exibirPassageiroPorViagemPoltrona(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna);
 double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
 double retornarArrecadacaoPorMes(vector<Passagem> &listaPassagensPorMes);
 vector<Passagem> retornarListaPassagensPorMes(vector<Passagem> &listaPassagens, int mes);
@@ -116,6 +119,10 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
 
             case 4:
                 exibirArrecadacaoPorMes(listaViagens, listaPassagens);
+                break;
+
+            case 5:
+                exibirPassageiroPorViagemPoltrona(listaViagens, listaPassagens);
                 break;
 
             case 0:
@@ -374,9 +381,22 @@ int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &l
 
     if (tamanho > 0)
     {
-        listarViagensDisponiveis(listaViagens);
-        cout << "\nSelecione uma viagem: ";
-        cin >> selecao;
+        do
+        {
+            systemClear();
+            cabecalhoListar();
+
+            listarViagensDisponiveis(listaViagens);
+            cout << "\nSelecione uma viagem: ";
+            cin >> selecao;
+
+            if (selecao < 1 || selecao > (tamanho+1))
+            {
+                cout << "\nViagem inexistente.\n";
+                systemPause();
+            }
+            
+        } while (selecao < 1 || selecao > tamanho);
 
         systemClear();
         cabecalhoArrecadacaoPorViagem();
@@ -440,6 +460,93 @@ int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &list
 
     systemPauseAndClear();
     return 0;
+}
+
+void cabecalhoPassageiroPorViagemPoltrona() {
+    cout << "------------------------------------------------------------------------------------------" << endl;
+    cout << "\t\t\tBuscar passageiro por viagem e poltrona" << endl;
+    cout << "------------------------------------------------------------------------------------------" << endl << endl;
+}
+
+int exibirPassageiroPorViagemPoltrona(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    vector<Passagem> listaPassagensPorViagem;
+    int tamanho = listaViagens.size();
+    string nomePassageiro;
+    int selecao, numeroPoltrona;
+
+    systemClear();
+    cabecalhoListar();
+
+    if (tamanho > 0)
+    {
+        do
+        {
+            systemClear();
+            cabecalhoListar();
+
+            listarViagensDisponiveis(listaViagens);
+            cout << "\nSelecione uma viagem: ";
+            cin >> selecao;
+
+            if (selecao < 1 || selecao > (tamanho+1))
+            {
+                cout << "\nViagem inexistente.\n";
+                systemPause();
+            }
+            
+        } while (selecao < 1 || selecao > tamanho);
+
+        do
+        {
+            systemClear();
+            cabecalhoPassageiroPorViagemPoltrona();
+            cout << "\nInforme o número da poltrona (1 a 40): ";
+            cin >> numeroPoltrona;
+
+            if (numeroPoltrona < 1 || numeroPoltrona > 40)
+            {
+                cout << "\nPoltrona inexistente.\n";
+                systemPause();
+            }
+            
+        } while (numeroPoltrona < 1 || numeroPoltrona > 40);
+
+        systemClear();
+        cabecalhoPassageiroPorViagemPoltrona();
+        viagemSelecionada(listaViagens[(selecao-1)]);
+        nomePassageiro = retornarNomePassageiroPorViagemPoltrona(listaPassagens, listaViagens[(selecao-1)], numeroPoltrona);
+
+        if (nomePassageiro != "")
+        {
+            cout << "Nome do passageiro: " << nomePassageiro << endl;
+            cout << "Poltrona: " << numeroPoltrona << endl;
+        }
+        else 
+        {
+            cout << "\nPassageiro não localizado.\n";
+        }
+    }
+    else
+    {
+        cout << "\nNenhum dado encontrado.\n";
+    }
+
+    systemPauseAndClear();
+    return 0;
+}
+
+string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna) {
+    vector<Passagem> listaPassagensPorViagem = retornarListaPassagensPorViagem(listaPassagens, viagem);
+
+    for (Passagem passagem : listaPassagensPorViagem)
+    {
+        if (passagem.numPoltrona == poltorna)
+        {
+            return passagem.nomePassageiro;
+        }
+    }
+    
+    return "";
 }
 
 bool compararViagens(Viagem v1, Viagem v2) {
