@@ -36,6 +36,8 @@ struct Passagem
 
 DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto);
 string formatarDataHora(DataHora dataHora);
+string formatarData(DataHora dataHora);
+string formatarHora(DataHora dataHora);
 // string formatarMoeda(double valor);
 string formatarCpf(string cpf);
 bool ehCpfValido(string cpf);
@@ -160,12 +162,24 @@ DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto
 }
 
 string formatarDataHora(DataHora dataHora) {
-    string dia = dataHora.dia < 10 ? "0"+to_string(dataHora.dia) : to_string(dataHora.dia);
-    string mes = dataHora.mes < 10 ? "0"+to_string(dataHora.mes) : to_string(dataHora.mes);
+    string dataFormatada = formatarData(dataHora);
+    string horaFormatada = formatarHora(dataHora);
+
+    return dataFormatada + " " + horaFormatada;
+}
+
+string formatarHora(DataHora dataHora) {
     string hora = dataHora.hora < 10 ? "0"+to_string(dataHora.hora) : to_string(dataHora.hora);
     string minuto = dataHora.minuto < 10 ? "0"+to_string(dataHora.minuto) : to_string(dataHora.minuto);
 
-    return dia + "/" + mes + "/" + to_string(dataHora.ano) + " " + hora + ":" + minuto;
+    return hora + ":" + minuto;
+}
+
+string formatarData(DataHora dataHora) {
+    string dia = dataHora.dia < 10 ? "0"+to_string(dataHora.dia) : to_string(dataHora.dia);
+    string mes = dataHora.mes < 10 ? "0"+to_string(dataHora.mes) : to_string(dataHora.mes);
+
+    return dia + "/" + mes + "/" + to_string(dataHora.ano);
 }
 
 // string formatarMoeda(double valor) {
@@ -383,11 +397,11 @@ void cabecalhoHorarioMaisRentavel() {
 }
 
 int exibirHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
-    DataHora dataHoraMaisRentavel = retornarHorarioMaisRentavel(listaViagens, listaPassagens);
+    DataHora horaMaisRentavel = retornarHorarioMaisRentavel(listaViagens, listaPassagens);
 
     systemClear();
     cabecalhoHorarioMaisRentavel();
-    cout << "Horário mais rentável: " << formatarDataHora(dataHoraMaisRentavel) << endl;
+    cout << "Horário mais rentável: " << formatarHora(horaMaisRentavel) + " h" << endl;
     systemPause();
     return 0;
 }
@@ -568,7 +582,7 @@ DataHora retornarHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passag
     vector<Viagem> listaViagensPorHora;
     vector<Passagem> listaPassagensPorViagem;
     double soma, maiorValor = 0;
-    DataHora dataHoraMaisRentavel;
+    DataHora horarioMaisRentavel;
     
     for (Viagem viagem : listaViagens)
     {
@@ -588,12 +602,12 @@ DataHora retornarHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passag
             if (soma > maiorValor)
             {
                 maiorValor = soma;
-                dataHoraMaisRentavel = passagem.viagem.dataHora;
+                horarioMaisRentavel = passagem.viagem.dataHora;
             }
         }
     }
     
-    return dataHoraMaisRentavel;
+    return horarioMaisRentavel;
 }
 
 string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna) {
