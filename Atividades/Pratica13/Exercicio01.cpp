@@ -48,9 +48,10 @@ void listarViagensDisponiveis(vector<Viagem> &listaViagens);
 int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens);
 // void removerViagemDisponivel(vector<Viagem> &listaViagens, int index);
 void listarPassagensVendidas(vector<Passagem> &listaPassagens);
-int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens);
-double arrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
-vector<Passagem> retornaListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem);
+void cabecalhoArrecadacaoPorViagem();
+int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
+vector<Passagem> retornarListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem);
 void selecionarPoltrona(Passagem passagem);
 int selecionarViagem(vector<Viagem> &listaViagens);
 void viagemSelecionada(Viagem viagem);
@@ -98,7 +99,7 @@ void menu(vector<Viagem> &listaViagens) {
                 break;
 
             case 3:
-                exibirArrecadacaoPorViagem(listaViagens);
+                exibirArrecadacaoPorViagem(listaViagens, listaPassagens);
                 break;
 
             case 0:
@@ -334,8 +335,17 @@ void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
     }
 }
 
-int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens) {
+void cabecalhoArrecadacaoPorViagem() {
+    cout << "------------------------------------------------------------------------------------------" << endl;
+    cout << "\t\t\t\tArrecadação por viagem" << endl;
+    cout << "------------------------------------------------------------------------------------------" << endl << endl;
+}
+
+int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    vector<Passagem> listaPassagensPorViagem;
     int tamanho = listaViagens.size();
+    double arrecadacaoPorViagem;
+    int selecao;
     string situacao;
 
     systemClear();
@@ -344,6 +354,15 @@ int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens) {
     if (tamanho > 0)
     {
         listarViagensDisponiveis(listaViagens);
+        cout << "\nSelecione uma viagem: ";
+        cin >> selecao;
+
+        systemClear();
+        cabecalhoArrecadacaoPorViagem();
+        viagemSelecionada(listaViagens[(selecao-1)]);
+        listaPassagensPorViagem = retornarListaPassagensPorViagem(listaPassagens, listaViagens[(selecao-1)]);
+        arrecadacaoPorViagem = retornarArrecadacaoPorViagem(listaPassagensPorViagem);
+        cout << "Arrecadação da viagem: " << arrecadacaoPorViagem << endl;
     }
     else
     {
@@ -373,7 +392,7 @@ bool compararViagens(Viagem v1, Viagem v2) {
     return false;
 }
 
-vector<Passagem> retornaListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem) {
+vector<Passagem> retornarListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem) {
     vector<Passagem> listaPassagensPorViagem;
 
     for (Passagem passagem : listaPassagens) 
@@ -387,7 +406,7 @@ vector<Passagem> retornaListaPassagensPorViagem(vector<Passagem> &listaPassagens
     return listaPassagensPorViagem;
 }
 
-double arrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem) {
+double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem) {
     double valorArrecadado = 0;
 
     for (Passagem passagem : listaPassagensPorViagem) 
