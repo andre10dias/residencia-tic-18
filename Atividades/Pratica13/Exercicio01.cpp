@@ -40,6 +40,8 @@ struct Onibus
 
 DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto);
 string formatarDataHora(DataHora dataHora);
+string formatarCpf(string cpf);
+bool ehCpfValido(string cpf);
 void popularViagensIda(vector<Viagem> &listaViagens);
 void popularViagensVolta(vector<Viagem> &listaViagens);
 void listarViagensDisponiveis(vector<Viagem> &listaViagens);
@@ -124,6 +126,34 @@ string formatarDataHora(DataHora dataHora) {
     return dia + "/" + mes + "/" + to_string(dataHora.ano) + " " + hora + ":" + minuto;
 }
 
+string formatarCpf(string cpf) {
+    string c1 = cpf.substr(0, 3);
+    string c2 = cpf.substr(4, 3);
+    string c3 = cpf.substr(8, 3);
+    string c4 = cpf.substr(12, 2);
+
+    return c1 + "." + c2 + "." + c3 + "-" + c4;
+}
+
+bool ehCpfValido(string cpf) {
+    int tamanho = cpf.size();
+
+    if (tamanho < 11)
+    {
+        return false;
+    }
+    
+    for (int i = 0; i < tamanho; i++)
+    {
+        if (!isdigit(cpf[i]))
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 void cabecalhoVendaPassagens() {
     cout << "-------------------------------------------------------------------------------------------------" << endl;
     cout << "\t\t\t\t\tVenda de passagens" << endl;
@@ -133,6 +163,7 @@ void cabecalhoVendaPassagens() {
 void venderPassagens(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) {
     Passagem passagem;
     int indexViagem;
+    bool validarCpf = false;
 
     indexViagem = selecionarViagem(listaViagens);
     passagem.viagem = listaViagens[indexViagem];
@@ -145,12 +176,23 @@ void venderPassagens(vector<Passagem> &listaPassagens, vector<Viagem> &listaViag
     cin.ignore();
     getline(cin, passagem.nomePassageiro);
 
-    systemClear();
-    cabecalhoVendaPassagens();
-    viagemSelecionada(passagem.viagem);
+    do
+    {
+        systemClear();
+        cabecalhoVendaPassagens();
+        viagemSelecionada(passagem.viagem);
 
-    cout << "CPF: ";
-    cin >> passagem.cpfPassageiro;
+        cout << "CPF (somente números): ";
+        cin >> passagem.cpfPassageiro;
+
+        validarCpf = ehCpfValido(passagem.cpfPassageiro);
+        if (!validarCpf)
+        {
+            cout << "\nCPF inválido.\n";
+            systemPause();
+        }
+        
+    } while (!validarCpf);
 
     systemClear();
     cabecalhoVendaPassagens();
