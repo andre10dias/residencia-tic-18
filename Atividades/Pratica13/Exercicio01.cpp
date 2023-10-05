@@ -46,15 +46,16 @@ void popularViagensIda(vector<Viagem> &listaViagens);
 void popularViagensVolta(vector<Viagem> &listaViagens);
 void listarViagensDisponiveis(vector<Viagem> &listaViagens);
 int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens);
-// void removerViagemDisponivel(vector<Viagem> &listaViagens, int index);
 void listarPassagensVendidas(vector<Passagem> &listaPassagens);
 void cabecalhoArrecadacaoPorViagem();
 void cabecalhoArrecadacaoPorMes();
 void cabecalhoPassageiroPorViagemPoltrona();
+int exibirMediaIdadeDosPassageiros(vector<Passagem> &listaPassagens);
 int exibirHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirPassageiroPorViagemPoltrona(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+float retornarMediaIdadeDosPassageiros(vector<Passagem> listaPassagens);
 DataHora retornarHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna);
 double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
@@ -406,6 +407,22 @@ int exibirHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &li
     return 0;
 }
 
+void cabecalhoMediaIdadeDosPassageiros() {
+    cout << "------------------------------------------------------------------------------------------" << endl;
+    cout << "\t\t\t\tMédia de idade dos passageiros" << endl;
+    cout << "------------------------------------------------------------------------------------------" << endl << endl;
+}
+
+int exibirMediaIdadeDosPassageiros(vector<Passagem> &listaPassagens) {
+    float mediaIdade = retornarMediaIdadeDosPassageiros(listaPassagens);
+
+    systemClear();
+    cabecalhoMediaIdadeDosPassageiros();
+    cout << "Média de idade: " << mediaIdade << endl;
+    systemPause();
+    return 0;
+}
+
 void cabecalhoArrecadacaoPorViagem() {
     cout << "------------------------------------------------------------------------------------------" << endl;
     cout << "\t\t\t\tArrecadação por viagem" << endl;
@@ -655,6 +672,18 @@ bool verificarHoraExistenteNaLista(vector<DataHora> listaHorarios, DataHora data
     return false;
 }
 
+float retornarMediaIdadeDosPassageiros(vector<Passagem> listaPassagens) {
+    int tamanho = listaPassagens.size();
+    int soma;
+
+    for (Passagem passagem : listaPassagens)
+    {
+        soma += passagem.idadePassageiro;
+    }
+
+    return soma / tamanho;
+}
+
 vector<DataHora> retornarListaHorariosDasViagens(vector<Viagem> &listaViagens) {
     vector<DataHora> listaHorarios;
     DataHora dataHora;
@@ -757,17 +786,6 @@ void listarViagensDisponiveis(vector<Viagem> &listaViagens) {
         cout << "[ " << index << " ] " << listaViagens[i].origem << "\t" << listaViagens[i].destino << "\t" << dataFormatada << endl;
     }
 }
-
-// void removerViagemDisponivel(vector<Viagem> &listaViagens, int index) {
-//     if (index == 0)
-//     {
-//         listaViagens.erase(listaViagens.begin());
-//     }
-//     else
-//     {
-//         listaViagens.erase(listaViagens.begin()+(index-1));
-//     }
-// }
 
 void popularViagensIda(vector<Viagem> &listaViagens) {
     Viagem viagem;

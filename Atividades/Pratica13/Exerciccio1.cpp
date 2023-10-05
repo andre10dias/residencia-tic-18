@@ -64,6 +64,8 @@ int retornaMediaIdade(vector<Viagem> &listaViagens);
 
 void venderPassagem(vector<Viagem> &listaViagens);
 
+void removerViagemDisponivel(vector<Viagem> &listaViagens, int index);
+
 void menu();
 
 void menuPoltrona(Passageiro &passageiro);
@@ -213,6 +215,17 @@ int retornaMediaIdade(vector<Viagem> &listaViagens) {
     media = idade / qtdTotalPass;
     return media;
 }
+
+// void removerViagemDisponivel(vector<Viagem> &listaViagens, int index) {
+//     if (index == 0)
+//     {
+//         listaViagens.erase(listaViagens.begin());
+//     }
+//     else
+//     {
+//         listaViagens.erase(listaViagens.begin()+(index-1));
+//     }
+// }
 
 void venderPassagem(vector<Viagem> &listaViagens) {
     Passageiro passageiro;
