@@ -90,7 +90,7 @@ void menu(vector<Viagem> &listaViagens) {
                 break;
 
             case 2:
-                //listarlistaPassagens(passagems);
+                exibirListaPassagensVendidas(listaPassagens);
                 break;
 
             case 0:
@@ -128,9 +128,9 @@ string formatarDataHora(DataHora dataHora) {
 
 string formatarCpf(string cpf) {
     string c1 = cpf.substr(0, 3);
-    string c2 = cpf.substr(4, 3);
-    string c3 = cpf.substr(8, 3);
-    string c4 = cpf.substr(12, 2);
+    string c2 = cpf.substr(3, 3);
+    string c3 = cpf.substr(6, 3);
+    string c4 = cpf.substr(9, 2);
 
     return c1 + "." + c2 + "." + c3 + "-" + c4;
 }
@@ -275,6 +275,7 @@ void selecionarPoltrona(Passagem passagem) {
         if (poltrona > 0 && poltrona <= MAX_PASS)
         {
             passagem.numPoltrona = poltrona;
+            selecaoInvalida = false;
         }
         else
         {
@@ -302,7 +303,7 @@ int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens) {
     }
     else
     {
-        cout << "\nNenhum dado encontrado\n";
+        cout << "\nNenhum dado encontrado.\n";
     }
 
     systemPauseAndClear();
@@ -312,14 +313,16 @@ int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens) {
 void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
     //int tamanho = listaPassagens.size();
     string dataHoraFormatada;
+    string cpfFormatado;
     Viagem viagem;    
 
-    cout << "Passageiro\tCPF\tIdade\tOrigem\tDestino\tData/Hora" << endl;
+    cout << "Passageiro\t\tCPF\t\t\tIdade\tOrigem\t\t\tDestino\t\t\tData/Hora" << endl;
     for (Passagem passagem : listaPassagens)
     {
         viagem = passagem.viagem;
         dataHoraFormatada = formatarDataHora(viagem.dataHora);
-        cout << passagem.nomePassageiro << "\t" << passagem.cpfPassageiro << "\t" << passagem.idadePassageiro << "\t" << viagem.origem << "\t" << viagem.destino << "\t" << dataHoraFormatada << endl;
+        cpfFormatado = formatarCpf(passagem.cpfPassageiro);
+        cout << passagem.nomePassageiro << "\t\t" << cpfFormatado << "\t\t" << passagem.idadePassageiro << "\t" << viagem.origem << "\t\t" << viagem.destino << "\t\t" << dataHoraFormatada << endl;
     }
 }
 
