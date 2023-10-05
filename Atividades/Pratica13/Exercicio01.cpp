@@ -40,6 +40,7 @@ struct Passagem
 
 DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto);
 string formatarDataHora(DataHora dataHora);
+// string formatarMoeda(double valor);
 string formatarCpf(string cpf);
 bool ehCpfValido(string cpf);
 void popularViagensIda(vector<Viagem> &listaViagens);
@@ -49,8 +50,12 @@ int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens);
 // void removerViagemDisponivel(vector<Viagem> &listaViagens, int index);
 void listarPassagensVendidas(vector<Passagem> &listaPassagens);
 void cabecalhoArrecadacaoPorViagem();
+void cabecalhoArrecadacaoPorMes();
 int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
+double retornarArrecadacaoPorMes(vector<Passagem> &listaPassagensPorMes);
+vector<Passagem> retornarListaPassagensPorMes(vector<Passagem> &listaPassagens, int mes);
 vector<Passagem> retornarListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem);
 void selecionarPoltrona(Passagem passagem);
 int selecionarViagem(vector<Viagem> &listaViagens);
@@ -90,8 +95,9 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
         cout << "-------------------------------------------------------------------------------------------------" << endl << endl;
         
         cout << "[ 1 ] Vender passagem\n[ 2 ] Listar passagens vendidas" << endl;
-        cout << "[ 3 ] Arrecadação por viagem\n[ 0 ] Sair\n" << endl;
-        cout << "Selecione uma opção: ";
+        cout << "[ 3 ] Arrecadação por viagem\n[ 4 ] Arrecadação por mês" << endl;
+        cout << "[ 5 ] Buscar passageiro\n[ 0 ] Sair" << endl;
+        cout << "\nSelecione uma opção: ";
         cin >> opcao;
 
         switch (opcao)
@@ -106,6 +112,10 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
 
             case 3:
                 exibirArrecadacaoPorViagem(listaViagens, listaPassagens);
+                break;
+
+            case 4:
+                exibirArrecadacaoPorMes(listaViagens, listaPassagens);
                 break;
 
             case 0:
@@ -140,6 +150,10 @@ string formatarDataHora(DataHora dataHora) {
 
     return dia + "/" + mes + "/" + to_string(dataHora.ano) + " " + hora + ":" + minuto;
 }
+
+// string formatarMoeda(double valor) {
+//     return "R$ "+to_string(valor)+",00";
+// }
 
 string formatarCpf(string cpf) {
     string c1 = cpf.substr(0, 3);
@@ -354,7 +368,6 @@ int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &l
     int tamanho = listaViagens.size();
     double arrecadacaoPorViagem;
     int selecao;
-    string situacao;
 
     systemClear();
     cabecalhoListar();
@@ -370,7 +383,55 @@ int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &l
         viagemSelecionada(listaViagens[(selecao-1)]);
         listaPassagensPorViagem = retornarListaPassagensPorViagem(listaPassagens, listaViagens[(selecao-1)]);
         arrecadacaoPorViagem = retornarArrecadacaoPorViagem(listaPassagensPorViagem);
-        cout << "Arrecadação da viagem: " << arrecadacaoPorViagem << endl;
+        cout << "Arrecadação da viagem: R$ " << arrecadacaoPorViagem << endl;
+    }
+    else
+    {
+        cout << "\nNenhum dado encontrado.\n";
+    }
+
+    systemPauseAndClear();
+    return 0;
+}
+
+void cabecalhoArrecadacaoPorMes() {
+    cout << "------------------------------------------------------------------------------------------" << endl;
+    cout << "\t\t\t\tArrecadação por mês" << endl;
+    cout << "------------------------------------------------------------------------------------------" << endl << endl;
+}
+
+int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    vector<Passagem> listaPassagensPorMes;
+    int tamanho = listaViagens.size();
+    double arrecadacaoPorMes;
+    int mes;
+
+    systemClear();
+    cabecalhoListar();
+
+    if (tamanho > 0)
+    {
+        do
+        {
+            systemClear();
+            cabecalhoListar();
+
+            cout << "Informe o mês: ";
+            cin >> mes;
+
+            if (mes < 1 || mes > 12)
+            {
+                cout << "\nMês inválido.\n";
+                systemPause();
+            }
+            
+        } while (mes < 1 || mes > 12);
+
+        systemClear();
+        cabecalhoArrecadacaoPorMes();
+        listaPassagensPorMes = retornarListaPassagensPorMes(listaPassagens, mes);
+        arrecadacaoPorMes = retornarArrecadacaoPorMes(listaPassagensPorMes);
+        cout << "Arrecadação do mês " << mes << ": R$ " << arrecadacaoPorMes << endl;
     }
     else
     {
@@ -400,6 +461,20 @@ bool compararViagens(Viagem v1, Viagem v2) {
     return false;
 }
 
+vector<Passagem> retornarListaPassagensPorMes(vector<Passagem> &listaPassagens, int mes) {
+    vector<Passagem> listaPassagensPorMes;
+
+    for (Passagem passagem : listaPassagens) 
+    {
+        if (mes == passagem.viagem.dataHora.mes)
+        {
+            listaPassagensPorMes.push_back(passagem);
+        }
+    }
+
+    return listaPassagensPorMes;
+}
+
 vector<Passagem> retornarListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem) {
     vector<Passagem> listaPassagensPorViagem;
 
@@ -418,6 +493,17 @@ double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem) {
     double valorArrecadado = 0;
 
     for (Passagem passagem : listaPassagensPorViagem) 
+    {
+        valorArrecadado += double(VL_PASS);
+    }
+
+    return valorArrecadado;
+}
+
+double retornarArrecadacaoPorMes(vector<Passagem> &listaPassagensPorMes) {
+    double valorArrecadado = 0;
+
+    for (Passagem passagem : listaPassagensPorMes) 
     {
         valorArrecadado += double(VL_PASS);
     }
