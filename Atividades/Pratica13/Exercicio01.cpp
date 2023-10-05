@@ -30,19 +30,16 @@ struct Passagem
     string nomePassageiro;
     string cpfPassageiro;
     int idadePassageiro;
+    double valorPassagem;
     Viagem viagem;
 };
-
-// struct Onibus
-// {
-//     vector<Viagem> listaViagens;
-// };
 
 DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto);
 string formatarDataHora(DataHora dataHora);
 // string formatarMoeda(double valor);
 string formatarCpf(string cpf);
 bool ehCpfValido(string cpf);
+bool verificarHoraExistenteNaLista(vector<DataHora> listaHorarios, DataHora dataHora);
 void popularViagensIda(vector<Viagem> &listaViagens);
 void popularViagensVolta(vector<Viagem> &listaViagens);
 void listarViagensDisponiveis(vector<Viagem> &listaViagens);
@@ -52,12 +49,16 @@ void listarPassagensVendidas(vector<Passagem> &listaPassagens);
 void cabecalhoArrecadacaoPorViagem();
 void cabecalhoArrecadacaoPorMes();
 void cabecalhoPassageiroPorViagemPoltrona();
+int exibirHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirArrecadacaoPorMes(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 int exibirPassageiroPorViagemPoltrona(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
+DataHora retornarHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna);
 double retornarArrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
 double retornarArrecadacaoPorMes(vector<Passagem> &listaPassagensPorMes);
+vector<DataHora> retornarListaHorariosDasViagens(vector<Viagem> &listaViagens);
+vector<Viagem> retornarListaViagensPorHorario(vector<Viagem> &listaViagens, DataHora dataHora);
 vector<Passagem> retornarListaPassagensPorMes(vector<Passagem> &listaPassagens, int mes);
 vector<Passagem> retornarListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem);
 void selecionarPoltrona(Passagem passagem);
@@ -99,7 +100,8 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
         
         cout << "[ 1 ] Vender passagem\n[ 2 ] Listar passagens vendidas" << endl;
         cout << "[ 3 ] Arrecadação por viagem\n[ 4 ] Arrecadação por mês" << endl;
-        cout << "[ 5 ] Buscar passageiro\n[ 0 ] Sair" << endl;
+        cout << "[ 5 ] Buscar passageiro por viagem e poltrona\n[ 6 ] Verificar horário mais rentável" << endl;
+        cout << "[ 7 ] Verificar média de idade dos passageiros\n[ 0 ] Sair" << endl;
         cout << "\nSelecione uma opção: ";
         cin >> opcao;
 
@@ -124,6 +126,14 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
             case 5:
                 exibirPassageiroPorViagemPoltrona(listaViagens, listaPassagens);
                 break;
+
+            case 6:
+                exibirHorarioMaisRentavel(listaViagens, listaPassagens);
+                break;
+
+            // case 7:
+            //     exibirMediaIdadePassageiros(listaPassagens);
+            //     break;
 
             case 0:
                 sair();
@@ -236,6 +246,8 @@ void venderPassagens(vector<Passagem> &listaPassagens, vector<Viagem> &listaViag
 
     cout << "Idade: ";
     cin >> passagem.idadePassageiro;
+
+    passagem.valorPassagem = VL_PASS;
 
     selecionarPoltrona(passagem);
 
@@ -362,6 +374,22 @@ void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
         cout << passagem.nomePassageiro << "\t" << cpfFormatado << "\t" << passagem.idadePassageiro << "\t";
         cout << viagem.origem << "\t" << viagem.destino << "\t" << passagem.numPoltrona << "\t" << dataHoraFormatada << endl;
     }
+}
+
+void cabecalhoHorarioMaisRentavel() {
+    cout << "------------------------------------------------------------------------------------------" << endl;
+    cout << "\t\t\t\tHorário mais rentável" << endl;
+    cout << "------------------------------------------------------------------------------------------" << endl << endl;
+}
+
+int exibirHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    DataHora dataHoraMaisRentavel = retornarHorarioMaisRentavel(listaViagens, listaPassagens);
+
+    systemClear();
+    cabecalhoHorarioMaisRentavel();
+    cout << "Horário mais rentável: " << formatarDataHora(dataHoraMaisRentavel) << endl;
+    systemPause();
+    return 0;
 }
 
 void cabecalhoArrecadacaoPorViagem() {
@@ -535,6 +563,39 @@ int exibirPassageiroPorViagemPoltrona(vector<Viagem> &listaViagens, vector<Passa
     return 0;
 }
 
+DataHora retornarHorarioMaisRentavel(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    vector<DataHora> listaHoras = retornarListaHorariosDasViagens(listaViagens);
+    vector<Viagem> listaViagensPorHora;
+    vector<Passagem> listaPassagensPorViagem;
+    double soma, maiorValor = 0;
+    DataHora dataHoraMaisRentavel;
+    
+    for (Viagem viagem : listaViagens)
+    {
+        listaPassagensPorViagem = retornarListaPassagensPorViagem(listaPassagens, viagem);
+        for (Passagem passagem : listaPassagensPorViagem)
+        {
+            soma = 0;
+            for (DataHora dataHora : listaHoras)
+            {
+                if (passagem.viagem.dataHora.hora == dataHora.hora 
+                    && passagem.viagem.dataHora.minuto == dataHora.minuto)
+                {
+                    soma += passagem.valorPassagem;
+                }
+            }
+
+            if (soma > maiorValor)
+            {
+                maiorValor = soma;
+                dataHoraMaisRentavel = passagem.viagem.dataHora;
+            }
+        }
+    }
+    
+    return dataHoraMaisRentavel;
+}
+
 string retornarNomePassageiroPorViagemPoltrona(vector<Passagem> &listaPassagens, Viagem viagem, int poltorna) {
     vector<Passagem> listaPassagensPorViagem = retornarListaPassagensPorViagem(listaPassagens, viagem);
 
@@ -566,6 +627,56 @@ bool compararViagens(Viagem v1, Viagem v2) {
     }
 
     return false;
+}
+
+bool verificarHoraExistenteNaLista(vector<DataHora> listaHorarios, DataHora dataHora) {
+    for (DataHora dtHr : listaHorarios) 
+    {
+        if (dtHr.hora == dataHora.hora 
+            && dtHr.minuto == dataHora.minuto) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+vector<DataHora> retornarListaHorariosDasViagens(vector<Viagem> &listaViagens) {
+    vector<DataHora> listaHorarios;
+    DataHora dataHora;
+    int tamanho;
+    
+    for (Viagem viagem : listaViagens)
+    {
+        tamanho = listaHorarios.size();
+        dataHora = viagem.dataHora;
+
+        if (tamanho == 0)
+        {
+            listaHorarios.push_back(dataHora);
+        }
+        else if (!verificarHoraExistenteNaLista(listaHorarios, dataHora))
+        {
+            listaHorarios.push_back(dataHora);
+        }
+    }
+
+    return listaHorarios;
+}
+
+vector<Viagem> retornarListaViagensPorHorario(vector<Viagem> &listaViagens, DataHora dataHora) {
+    vector<Viagem> listaViagensPorHora;
+
+    for (Viagem viagem : listaViagens) 
+    {
+        if (viagem.dataHora.hora == dataHora.hora 
+            && viagem.dataHora.minuto == dataHora.minuto)
+        {
+            listaViagensPorHora.push_back(viagem);
+        }
+    }
+
+    return listaViagensPorHora;
 }
 
 vector<Passagem> retornarListaPassagensPorMes(vector<Passagem> &listaPassagens, int mes) {
@@ -742,6 +853,7 @@ void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) 
     p1.idadePassageiro = 41;
     p1.numPoltrona = 20;
     p1.viagem = v1;
+    p1.valorPassagem = VL_PASS;
     listaPassagens.push_back(p1);
 
     Passagem p2;
@@ -752,6 +864,7 @@ void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) 
     p2.idadePassageiro = 40;
     p2.numPoltrona = 32;
     p2.viagem = v2;
+    p2.valorPassagem = VL_PASS;
     listaPassagens.push_back(p2);
 
     Passagem p3;
@@ -762,6 +875,7 @@ void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) 
     p3.idadePassageiro = 20;
     p3.numPoltrona = 19;
     p3.viagem = v3;
+    p3.valorPassagem = VL_PASS;
     listaPassagens.push_back(p3);
 
     Passagem p4;
@@ -772,6 +886,7 @@ void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) 
     p4.idadePassageiro = 18;
     p4.numPoltrona = 38;
     p4.viagem = v4;
+    p4.valorPassagem = VL_PASS;
     listaPassagens.push_back(p4);
 
     Passagem p5;
@@ -782,5 +897,6 @@ void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) 
     p5.idadePassageiro = 30;
     p5.numPoltrona = 40;
     p5.viagem = v5;
+    p5.valorPassagem = VL_PASS;
     listaPassagens.push_back(p5);
 }
