@@ -33,10 +33,10 @@ struct Passagem
     Viagem viagem;
 };
 
-struct Onibus
-{
-    vector<Viagem> listaViagens;
-};
+// struct Onibus
+// {
+//     vector<Viagem> listaViagens;
+// };
 
 DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto);
 string formatarDataHora(DataHora dataHora);
@@ -57,23 +57,29 @@ int selecionarViagem(vector<Viagem> &listaViagens);
 void viagemSelecionada(Viagem viagem);
 void venderPassagens(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
 void cabecalhoVendaPassagens();
-void menu(vector<Viagem> &listaViagens);
+// void menu(vector<Viagem> &listaViagens);
+void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 void systemPauseAndClear();
 void systemPause();
 void systemClear();
 int sair();
 
+void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
+
 int main(void)  {
     vector<Viagem> listaViagens;
+    vector<Passagem> listaPassagens;
+
     popularViagensIda(listaViagens);
     popularViagensVolta(listaViagens);
-    menu(listaViagens);
+    mockVendas(listaPassagens, listaViagens);
+    menu(listaViagens, listaPassagens);
     cout << endl;
     return 0;
 }
 
-void menu(vector<Viagem> &listaViagens) {
-    vector<Passagem> listaPassagens;
+void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
+    //vector<Passagem> listaPassagens;
     int opcao;
 
     do
@@ -325,13 +331,15 @@ void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
     string cpfFormatado;
     Viagem viagem;    
 
-    cout << "Passageiro\t\tCPF\t\t\tIdade\tOrigem\t\t\tDestino\t\t\tData/Hora" << endl;
+    cout << "Passageiro\tCPF\t\tIdade\tOrigem\t\tDestino\t\tPoltrona\tData/Hora" << endl;
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
     for (Passagem passagem : listaPassagens)
     {
         viagem = passagem.viagem;
         dataHoraFormatada = formatarDataHora(viagem.dataHora);
         cpfFormatado = formatarCpf(passagem.cpfPassageiro);
-        cout << passagem.nomePassageiro << "\t\t" << cpfFormatado << "\t\t" << passagem.idadePassageiro << "\t" << viagem.origem << "\t\t" << viagem.destino << "\t\t" << dataHoraFormatada << endl;
+        cout << passagem.nomePassageiro << "\t" << cpfFormatado << "\t" << passagem.idadePassageiro << "\t";
+        cout << viagem.origem << "\t" << viagem.destino << "\t" << passagem.numPoltrona << "\t" << dataHoraFormatada << endl;
     }
 }
 
@@ -530,4 +538,56 @@ void systemPause() {
 void systemPauseAndClear() {
     systemPause();
     systemClear();
+}
+
+void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) {
+    Passagem p1;
+    Viagem v1 = listaViagens[5];
+
+    p1.nomePassageiro = "Carlos Dias";
+    p1.cpfPassageiro = "25463259701";
+    p1.idadePassageiro = 41;
+    p1.numPoltrona = 20;
+    p1.viagem = v1;
+    listaPassagens.push_back(p1);
+
+    Passagem p2;
+    Viagem v2 = listaViagens[5];
+
+    p2.nomePassageiro = "Pedro Luis";
+    p2.cpfPassageiro = "56980124573";
+    p2.idadePassageiro = 40;
+    p2.numPoltrona = 32;
+    p2.viagem = v2;
+    listaPassagens.push_back(p2);
+
+    Passagem p3;
+    Viagem v3 = listaViagens[2];
+
+    p3.nomePassageiro = "Antonio Silva";
+    p3.cpfPassageiro = "54648022112";
+    p3.idadePassageiro = 20;
+    p3.numPoltrona = 19;
+    p3.viagem = v3;
+    listaPassagens.push_back(p3);
+
+    Passagem p4;
+    Viagem v4 = listaViagens[0];
+
+    p4.nomePassageiro = "Juliana Freire";
+    p4.cpfPassageiro = "4654840012365";
+    p4.idadePassageiro = 18;
+    p4.numPoltrona = 38;
+    p4.viagem = v4;
+    listaPassagens.push_back(p4);
+
+    Passagem p5;
+    Viagem v5 = listaViagens[9];
+
+    p5.nomePassageiro = "Maria Silva";
+    p5.cpfPassageiro = "09871221225";
+    p5.idadePassageiro = 30;
+    p5.numPoltrona = 40;
+    p5.viagem = v5;
+    listaPassagens.push_back(p5);
 }
