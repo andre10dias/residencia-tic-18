@@ -286,6 +286,8 @@ int selecionarViagem(vector<Viagem> &listaViagens) {
             selecaoInvalida = true;
         }
     } while (selecaoInvalida);
+
+    return -1;
 }
 
 void viagemSelecionada(Viagem viagem) {
