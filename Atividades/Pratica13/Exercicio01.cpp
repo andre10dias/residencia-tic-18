@@ -75,7 +75,7 @@ void systemClear();
 int sair();
 
 //Função utilizada para testes
-void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
+// void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
 
 int main(void)  {
     vector<Viagem> listaViagens;
@@ -83,7 +83,7 @@ int main(void)  {
 
     popularViagensIda(listaViagens);
     popularViagensVolta(listaViagens);
-    mockVendas(listaPassagens, listaViagens);
+    // mockVendas(listaPassagens, listaViagens);
     menu(listaViagens, listaPassagens);
     cout << endl;
     return 0;
@@ -368,7 +368,6 @@ int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens) {
 }
 
 void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
-    //int tamanho = listaPassagens.size();
     string dataHoraFormatada;
     string cpfFormatado;
     Viagem viagem;    
@@ -869,59 +868,59 @@ void systemPauseAndClear() {
 }
 
 //Função utilizada para testes
-void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) {
-    Passagem p1;
-    Viagem v1 = listaViagens[5];
+// void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) {
+//     Passagem p1;
+//     Viagem v1 = listaViagens[5];
 
-    p1.nomePassageiro = "Carlos Dias";
-    p1.cpfPassageiro = "25463259701";
-    p1.idadePassageiro = 41;
-    p1.numPoltrona = 20;
-    p1.viagem = v1;
-    p1.valorPassagem = VL_PASS;
-    listaPassagens.push_back(p1);
+//     p1.nomePassageiro = "Carlos Dias";
+//     p1.cpfPassageiro = "25463259701";
+//     p1.idadePassageiro = 41;
+//     p1.numPoltrona = 20;
+//     p1.viagem = v1;
+//     p1.valorPassagem = VL_PASS;
+//     listaPassagens.push_back(p1);
 
-    Passagem p2;
-    Viagem v2 = listaViagens[5];
+//     Passagem p2;
+//     Viagem v2 = listaViagens[5];
 
-    p2.nomePassageiro = "Pedro Luis";
-    p2.cpfPassageiro = "56980124573";
-    p2.idadePassageiro = 40;
-    p2.numPoltrona = 32;
-    p2.viagem = v2;
-    p2.valorPassagem = VL_PASS;
-    listaPassagens.push_back(p2);
+//     p2.nomePassageiro = "Pedro Luis";
+//     p2.cpfPassageiro = "56980124573";
+//     p2.idadePassageiro = 40;
+//     p2.numPoltrona = 32;
+//     p2.viagem = v2;
+//     p2.valorPassagem = VL_PASS;
+//     listaPassagens.push_back(p2);
 
-    Passagem p3;
-    Viagem v3 = listaViagens[2];
+//     Passagem p3;
+//     Viagem v3 = listaViagens[2];
 
-    p3.nomePassageiro = "Antonio Silva";
-    p3.cpfPassageiro = "54648022112";
-    p3.idadePassageiro = 20;
-    p3.numPoltrona = 19;
-    p3.viagem = v3;
-    p3.valorPassagem = VL_PASS;
-    listaPassagens.push_back(p3);
+//     p3.nomePassageiro = "Antonio Silva";
+//     p3.cpfPassageiro = "54648022112";
+//     p3.idadePassageiro = 20;
+//     p3.numPoltrona = 19;
+//     p3.viagem = v3;
+//     p3.valorPassagem = VL_PASS;
+//     listaPassagens.push_back(p3);
 
-    Passagem p4;
-    Viagem v4 = listaViagens[0];
+//     Passagem p4;
+//     Viagem v4 = listaViagens[0];
 
-    p4.nomePassageiro = "Juliana Freire";
-    p4.cpfPassageiro = "4654840012365";
-    p4.idadePassageiro = 18;
-    p4.numPoltrona = 38;
-    p4.viagem = v4;
-    p4.valorPassagem = VL_PASS;
-    listaPassagens.push_back(p4);
+//     p4.nomePassageiro = "Juliana Freire";
+//     p4.cpfPassageiro = "4654840012365";
+//     p4.idadePassageiro = 18;
+//     p4.numPoltrona = 38;
+//     p4.viagem = v4;
+//     p4.valorPassagem = VL_PASS;
+//     listaPassagens.push_back(p4);
 
-    Passagem p5;
-    Viagem v5 = listaViagens[9];
+//     Passagem p5;
+//     Viagem v5 = listaViagens[9];
 
-    p5.nomePassageiro = "Maria Silva";
-    p5.cpfPassageiro = "09871221225";
-    p5.idadePassageiro = 30;
-    p5.numPoltrona = 40;
-    p5.viagem = v5;
-    p5.valorPassagem = VL_PASS;
-    listaPassagens.push_back(p5);
-}
+//     p5.nomePassageiro = "Maria Silva";
+//     p5.cpfPassageiro = "09871221225";
+//     p5.idadePassageiro = 30;
+//     p5.numPoltrona = 40;
+//     p5.viagem = v5;
+//     p5.valorPassagem = VL_PASS;
+//     listaPassagens.push_back(p5);
+// }
