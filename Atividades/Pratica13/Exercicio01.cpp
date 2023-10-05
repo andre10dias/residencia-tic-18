@@ -48,6 +48,9 @@ void listarViagensDisponiveis(vector<Viagem> &listaViagens);
 int exibirListaPassagensVendidas(vector<Passagem> &listaPassagens);
 // void removerViagemDisponivel(vector<Viagem> &listaViagens, int index);
 void listarPassagensVendidas(vector<Passagem> &listaPassagens);
+int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens);
+double arrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem);
+vector<Passagem> retornaListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem);
 void selecionarPoltrona(Passagem passagem);
 int selecionarViagem(vector<Viagem> &listaViagens);
 void viagemSelecionada(Viagem viagem);
@@ -79,7 +82,8 @@ void menu(vector<Viagem> &listaViagens) {
         cout << "\t\t\t\tSistema de venda de passagens" << endl;
         cout << "-------------------------------------------------------------------------------------------------" << endl << endl;
         
-        cout << "[ 1 ] Vender passagem\n[ 2 ] Listar passagens vendidas\n[ 0 ] Sair\n" << endl;
+        cout << "[ 1 ] Vender passagem\n[ 2 ] Listar passagens vendidas" << endl;
+        cout << "[ 3 ] Arrecadação por viagem\n[ 0 ] Sair\n" << endl;
         cout << "Selecione uma opção: ";
         cin >> opcao;
 
@@ -91,6 +95,10 @@ void menu(vector<Viagem> &listaViagens) {
 
             case 2:
                 exibirListaPassagensVendidas(listaPassagens);
+                break;
+
+            case 3:
+                exibirArrecadacaoPorViagem(listaViagens);
                 break;
 
             case 0:
@@ -324,6 +332,70 @@ void listarPassagensVendidas(vector<Passagem> &listaPassagens) {
         cpfFormatado = formatarCpf(passagem.cpfPassageiro);
         cout << passagem.nomePassageiro << "\t\t" << cpfFormatado << "\t\t" << passagem.idadePassageiro << "\t" << viagem.origem << "\t\t" << viagem.destino << "\t\t" << dataHoraFormatada << endl;
     }
+}
+
+int exibirArrecadacaoPorViagem(vector<Viagem> &listaViagens) {
+    int tamanho = listaViagens.size();
+    string situacao;
+
+    systemClear();
+    cabecalhoListar();
+
+    if (tamanho > 0)
+    {
+        listarViagensDisponiveis(listaViagens);
+    }
+    else
+    {
+        cout << "\nNenhum dado encontrado.\n";
+    }
+
+    systemPauseAndClear();
+    return 0;
+}
+
+bool compararViagens(Viagem v1, Viagem v2) {
+    string dtHoraFormatadaV1;
+    string dtHoraFormatadaV2;
+
+    if (v1.destino == v2.destino && v1.origem == v1.origem)
+    {
+        dtHoraFormatadaV1 = formatarDataHora(v1.dataHora);
+        dtHoraFormatadaV2 = formatarDataHora(v2.dataHora);
+
+        if (dtHoraFormatadaV1 == dtHoraFormatadaV2)
+        {
+            return true;
+        }
+        
+    }
+
+    return false;
+}
+
+vector<Passagem> retornaListaPassagensPorViagem(vector<Passagem> &listaPassagens, Viagem viagem) {
+    vector<Passagem> listaPassagensPorViagem;
+
+    for (Passagem passagem : listaPassagens) 
+    {
+        if (compararViagens(viagem, passagem.viagem))
+        {
+            listaPassagensPorViagem.push_back(passagem);
+        }
+    }
+
+    return listaPassagensPorViagem;
+}
+
+double arrecadacaoPorViagem(vector<Passagem> &listaPassagensPorViagem) {
+    double valorArrecadado = 0;
+
+    for (Passagem passagem : listaPassagensPorViagem) 
+    {
+        valorArrecadado += double(VL_PASS);
+    }
+
+    return valorArrecadado;
 }
 
 void listarViagensDisponiveis(vector<Viagem> &listaViagens) {
