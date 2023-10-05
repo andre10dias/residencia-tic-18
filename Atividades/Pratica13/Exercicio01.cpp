@@ -38,7 +38,6 @@ DataHora construtorDataHora(int _dia, int _mes, int _ano, int _hora, int _minuto
 string formatarDataHora(DataHora dataHora);
 string formatarData(DataHora dataHora);
 string formatarHora(DataHora dataHora);
-// string formatarMoeda(double valor);
 string formatarCpf(string cpf);
 bool ehCpfValido(string cpf);
 bool verificarHoraExistenteNaLista(vector<DataHora> listaHorarios, DataHora dataHora);
@@ -69,13 +68,13 @@ int selecionarViagem(vector<Viagem> &listaViagens);
 void viagemSelecionada(Viagem viagem);
 void venderPassagens(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
 void cabecalhoVendaPassagens();
-// void menu(vector<Viagem> &listaViagens);
 void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens);
 void systemPauseAndClear();
 void systemPause();
 void systemClear();
 int sair();
 
+//Função utilizada para testes
 void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens);
 
 int main(void)  {
@@ -91,7 +90,6 @@ int main(void)  {
 }
 
 void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
-    //vector<Passagem> listaPassagens;
     int opcao;
 
     do
@@ -134,9 +132,9 @@ void menu(vector<Viagem> &listaViagens, vector<Passagem> &listaPassagens) {
                 exibirHorarioMaisRentavel(listaViagens, listaPassagens);
                 break;
 
-            // case 7:
-            //     exibirMediaIdadePassageiros(listaPassagens);
-            //     break;
+            case 7:
+                exibirMediaIdadeDosPassageiros(listaPassagens);
+                break;
 
             case 0:
                 sair();
@@ -182,10 +180,6 @@ string formatarData(DataHora dataHora) {
 
     return dia + "/" + mes + "/" + to_string(dataHora.ano);
 }
-
-// string formatarMoeda(double valor) {
-//     return "R$ "+to_string(valor)+",00";
-// }
 
 string formatarCpf(string cpf) {
     string c1 = cpf.substr(0, 3);
@@ -674,7 +668,7 @@ bool verificarHoraExistenteNaLista(vector<DataHora> listaHorarios, DataHora data
 
 float retornarMediaIdadeDosPassageiros(vector<Passagem> listaPassagens) {
     int tamanho = listaPassagens.size();
-    int soma;
+    int soma = 0;
 
     for (Passagem passagem : listaPassagens)
     {
@@ -789,7 +783,6 @@ void listarViagensDisponiveis(vector<Viagem> &listaViagens) {
 
 void popularViagensIda(vector<Viagem> &listaViagens) {
     Viagem viagem;
-    DataHora dataHora;
 
     viagem.origem = "Rio de Janeiro";
     viagem.destino = "São Paulo";
@@ -819,7 +812,6 @@ void popularViagensIda(vector<Viagem> &listaViagens) {
 
 void popularViagensVolta(vector<Viagem> &listaViagens) {
     Viagem viagem;
-    // DataHora dataHora;
 
     viagem.origem = "São Paulo";
     viagem.destino = "Rio de Janeiro";
@@ -876,6 +868,7 @@ void systemPauseAndClear() {
     systemClear();
 }
 
+//Função utilizada para testes
 void mockVendas(vector<Passagem> &listaPassagens, vector<Viagem> &listaViagens) {
     Passagem p1;
     Viagem v1 = listaViagens[5];
