@@ -377,6 +377,11 @@ int cadastrarAluno() {
             {
                 if (opcao == 's' || opcao == 'S')
                 {
+                    systemClear();
+                    cout << TRACO << endl;
+                    cout << "\t\t\t\t\tCadastrar novo aluno" << endl;
+                    cout << TRACO << endl << endl;
+
                     inserirAluno();
                     cout << "\nAluno cadastrado com sucesso.\n";
                     systemPause();
@@ -407,11 +412,6 @@ void inserirAluno() {
     vector<Nota> listaNotas;
     Nota novaNota1, novaNota2;
     Aluno aluno;
-
-    systemClear();
-    cout << TRACO << endl;
-    cout << "\t\t\t\t\tCadastrar novo aluno" << endl;
-    cout << TRACO << endl << endl;
 
     cout << "Nome: ";
     //cin.ignore();
