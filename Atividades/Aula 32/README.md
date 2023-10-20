@@ -38,4 +38,4 @@ int  main(void) {
 * Quarta-feira, 19 de Outubro de 2023 
 */
 ```
-Créditos: @Thales-assis | # **[Calcular-Dia-da-Semana.cpp](https://gist.github.com/thales-assis/f1d8dc868ae6cc971bd6c87c2aec1118)**
+Créditos: @thales-assis | # **[Calcular-Dia-da-Semana.cpp](https://gist.github.com/thales-assis/f1d8dc868ae6cc971bd6c87c2aec1118)**
