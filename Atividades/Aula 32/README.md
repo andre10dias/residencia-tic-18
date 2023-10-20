@@ -11,6 +11,7 @@
 | LONG | 19 de Outubro de 2023 |
 | FULL | Quarta-feira, 19 de Outubro de 2023 |
 
+
 > Exemplo de utilização
 
 ```
