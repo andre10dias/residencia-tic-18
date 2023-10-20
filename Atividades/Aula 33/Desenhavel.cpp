@@ -93,14 +93,28 @@ void Triangulo::desenhar() {
 }
 
 int main(void) {
-    Circulo circulo;
+    Circulo* circulo = new Circulo();
     Retangulo retangulo;
     Triangulo triangulo;
 
-    circulo.desenhar();
+    circulo->desenhar();
     retangulo.desenhar();
     triangulo.desenhar();
 
+    Desenhavel* item;
+    item = circulo;
+
+
+    item->desenhar();
+    item = &retangulo;
+
+    item->desenhar();
+    item = &triangulo;
+
+    item->desenhar();
+
     cout << endl;
+    delete(circulo);
+    circulo->desenhar(); //Não desenha o circulo (Falha de segmentação)
     return 0;
 }
